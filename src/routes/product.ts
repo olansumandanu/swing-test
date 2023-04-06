@@ -4,7 +4,6 @@ import productController from '../controllers/productController'
 
 const router = express.Router()
 
-router.post('/', productController.createProduct)
-router.get('/api/todo', productController.findAllProduct)
+router.get('/api/products', productController.findAllProduct)
 
 export { router as productRouter }

@@ -34,3 +34,11 @@ Databases:
 -   Logic handling
 
 # Push your product in your github repository and send to email: ari.getswing.app
+
+npm install
+
+Run
+docker-compose up
+
+Clear Docker
+docker-compose down -v --rmi local

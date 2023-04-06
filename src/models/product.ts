@@ -1,38 +1,37 @@
 import mongoose, { Schema, model } from 'mongoose'
-import { IStore, StoreDoc } from './store'
+import { v4 as uuidv4 } from 'uuid'
+
+import { IStore } from './store'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 
-interface IProduct {
-    id: string
+export interface IProduct {
     title: string
     url: string
-    price: Schema.Types.Decimal128
+    price: number
     description: string
-    storeId: StoreDoc
+    store_id: string
 }
 
 export interface ProductDoc extends mongoose.Document {
-    id: string
     title: string
     url: string
-    price: Schema.Types.Decimal128
+    price: number
     description: string
-    storeId: IStore
+    store_id: IStore
+    version: number
 }
 
 interface ProductModel extends mongoose.Model<ProductDoc> {
     build(attrs: IProduct): ProductDoc
-    findByEvent(event: {
-        id: string
-        version: number
-    }): Promise<ProductDoc | null>
 }
 
 const productSchema = new Schema<ProductDoc>(
     {
         _id: {
-            type: Schema.Types.ObjectId,
-            require: true,
+            type: String,
+            default: function genUUID() {
+                uuidv4()
+            },
         },
         title: {
             type: Schema.Types.String,
@@ -43,15 +42,15 @@ const productSchema = new Schema<ProductDoc>(
             require: true,
         },
         price: {
-            type: Schema.Types.Decimal128,
+            type: Schema.Types.Number,
             require: true,
         },
         description: {
             type: Schema.Types.String,
             require: true,
         },
-        storeId: {
-            type: mongoose.Schema.Types.ObjectId,
+        store_id: {
+            type: Schema.Types.String,
             ref: 'Store',
         },
     },
@@ -60,6 +59,7 @@ const productSchema = new Schema<ProductDoc>(
             transform(doc, ret) {
                 ret.id = ret._id
                 delete ret._id
+                delete ret.version
             },
         },
     }
@@ -68,19 +68,14 @@ const productSchema = new Schema<ProductDoc>(
 productSchema.set('versionKey', 'version')
 productSchema.plugin(updateIfCurrentPlugin)
 
-productSchema.statics.findByEvent = (event: {
-    id: string
-    version: number
-}) => {
-    return Product.findOne({
-        _id: event.id,
-        version: event.version - 1,
-    })
-}
-
 productSchema.statics.build = (attrs: IProduct) => {
     return new Product({
-        _id: attrs.id,
+        _id: uuidv4(),
+        title: attrs.title,
+        url: attrs.url,
+        price: attrs.price,
+        description: attrs.description,
+        store_id: attrs.store_id,
     })
 }
 

@@ -1,0 +1,20 @@
+[
+    {
+        "name": "olan",
+        "url": "https://test.com/image.png",
+        "address": "Ujung berung bandung",
+        "phone": "085352211982",
+        "id": "6282aa32-4948-4aaf-8114-2b6ed2a8e872",
+        "operational_time_start": 0,
+        "operational_time_end": 0
+    },
+    {
+        "name": "olan",
+        "url": "https://test.com/image.png",
+        "address": "Ujung berung bandung",
+        "phone": "085352211982",
+        "id": "b4b1f425-0afc-4024-829d-48746d9ca03d",
+        "operational_time_start": 0,
+        "operational_time_end": 0
+    }
+]

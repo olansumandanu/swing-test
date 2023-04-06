@@ -5,6 +5,7 @@ import { NotFoundError } from './errors/not-found-error'
 import { errorHandler } from './middlewares/error-handler'
 import { storeRouter } from './routes/store'
 import { currentUser } from './middlewares/current-user'
+import { productRouter } from './routes/product'
 
 const app = express()
 app.set('trust proxy', true)
@@ -13,6 +14,7 @@ app.use(json())
 app.use(currentUser)
 
 app.use(storeRouter)
+app.use(productRouter)
 
 app.all('*', async (req, res) => {
     throw new NotFoundError()

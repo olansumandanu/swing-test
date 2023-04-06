@@ -4,6 +4,7 @@
         "module": "commonjs",
         "rootDir": "./src",
         "strict": true,
+        "resolveJsonModule": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true

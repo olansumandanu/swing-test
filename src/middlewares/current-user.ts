@@ -1,14 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
 import { IStore, Store } from '../models/store'
-
-interface UserPayload {
-    store: IStore
-}
+import { IProduct, Product } from '../models/product'
 
 declare global {
     namespace Express {
         interface Request {
             stores?: IStore[]
+            products?: any
         }
     }
 }
@@ -20,6 +18,7 @@ export const currentUser = async (
 ) => {
     try {
         req.stores = await Store.find()
+        req.products = await Product.find().populate('store_id').exec()
     } catch (err) {}
 
     next()
